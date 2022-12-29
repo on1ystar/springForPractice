@@ -3,6 +3,8 @@ package com.example.practice.service;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
+import java.util.List;
+
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -38,8 +40,7 @@ public class MemberServiceTest {
         Long saveId = memberService.join(member);
 
         //Then
-        Member findMember = memberRepository.findById(saveId).get();
-        assertEquals(member.getName(), findMember.getName());
+        Assertions.assertThat(memberRepository.findById(saveId).get()).isEqualTo(member);
 
     }
 
@@ -61,7 +62,42 @@ public class MemberServiceTest {
             () -> memberService.join(member2));
 
         Assertions.assertThat(e.getMessage()).isEqualTo("이미 존재하는 회원입니다.");
+    }
 
+    @Test
+    public void 전체_회원_조회() {
 
+        //Given
+        Member member1 = new Member();
+        member1.setName("spring1");
+
+        Member member2 = new Member();
+        member2.setName("spring2");
+        
+        memberService.join(member1);
+        memberService.join(member2);
+        
+        //When
+        List<Member> result = memberService.findMembers();
+
+        //Then
+        Assertions.assertThat(result.size()).isEqualTo(2);
+
+    }
+
+    @Test
+    public void 회원_한명_조회() {
+
+        //Given
+        Member member1 = new Member();
+        member1.setName("spring1");
+
+        Long memberId = memberService.join(member1);
+        
+        //When
+        Member result = memberService.findOne(memberId).get();
+
+        //Then
+        Assertions.assertThat(result).isEqualTo(member1);
     }
 }
