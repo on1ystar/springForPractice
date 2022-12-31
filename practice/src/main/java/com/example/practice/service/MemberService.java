@@ -3,16 +3,19 @@ package com.example.practice.service;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 import com.example.practice.domain.Member;
 import com.example.practice.repository.MemberRepository;
 import com.example.practice.repository.MemoryMemberRepository;
 
+@Service
 public class MemberService {
     
-    // private final MemberRepository memberRepository = new MemoryMemberRepository();
     private final MemberRepository memberRepository;
 
-    // DI를 위한 생성자
+    @Autowired
     public MemberService(MemberRepository memberRepository){
         this.memberRepository = memberRepository;
     }
