@@ -8,18 +8,16 @@ import org.springframework.stereotype.Service;
 
 import com.example.practice.domain.Member;
 import com.example.practice.repository.MemberRepository;
-import com.example.practice.repository.MemoryMemberRepository;
 
-@Service
+// @Service
 public class MemberService {
     
     private final MemberRepository memberRepository;
 
-    @Autowired
+    // @Autowired
     public MemberService(MemberRepository memberRepository){
         this.memberRepository = memberRepository;
     }
-    
     
     /**P
      * 회원가입
