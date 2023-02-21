@@ -1,36 +1,25 @@
 package com.example.practice.service;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.util.List;
 
 import org.assertj.core.api.Assertions;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.example.practice.domain.Member;
-import com.example.practice.repository.MemoryMemberRepository;
+import com.example.practice.repository.MemberRepository;
 
 @SpringBootTest  // 스프링 컨테이너와 테스트를 함께 실행
 @Transactional  //  테스트 시작 전에 트랜잭션을 시작하고, 테스트 완료 후에 항상 롤백
 public class MemberServiceIntegrationTest {
 
-    MemberService memberService;
-    MemoryMemberRepository memberRepository;
-
-    @BeforeEach
-    public void BeforeEach() {
-        memberRepository = new MemoryMemberRepository();
-        memberService = new MemberService(memberRepository);
-    }
-
-    @AfterEach
-    public void AfterEach() {
-        memberRepository.clearStore();
-    }
+    @Autowired MemberService memberService;
+    @Autowired MemberRepository memberRepository;
 
     @Test
     public void 회원가입() throws Exception {
@@ -43,8 +32,8 @@ public class MemberServiceIntegrationTest {
         Long saveId = memberService.join(member);
 
         //Then
-        Assertions.assertThat(memberRepository.findById(saveId).get()).isEqualTo(member);
-
+        Member findMember = memberRepository.findById(saveId).get();
+        assertEquals(member.getName(), findMember.getName());
     }
 
     @Test
@@ -101,6 +90,6 @@ public class MemberServiceIntegrationTest {
         Member result = memberService.findOne(memberId).get();
 
         //Then
-        Assertions.assertThat(result).isEqualTo(member1);
+        Assertions.assertThat(result.getName()).isEqualTo(member1.getName());
     }
 }
