@@ -3,13 +3,12 @@ package com.example.practice.service;
 import java.util.List;
 import java.util.Optional;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
 import com.example.practice.domain.Member;
 import com.example.practice.repository.MemberRepository;
 
-// @Service
+import org.springframework.transaction.annotation.Transactional;
+
+@Transactional
 public class MemberService {
     
     private final MemberRepository memberRepository;
